@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lector Veloz Pro - Mide y mejora tu lectura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-book-reader logo-icon"></i>
+                <div>
+                    <h1>Lector Veloz Pro</h1>
+                    <p class="subtitle">Mide y mejora tu velocidad y comprensión lectora con nuestra herramienta profesional</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div id="intro-section" class="card fade-in">
+                <h2><i class="fas fa-tachometer-alt"></i> Prueba de Velocidad Lectora</h2>
+                <p>Esta herramienta te ayudará a medir tu velocidad de lectura (palabras por minuto) y evaluará tu comprensión del texto mediante un cuestionario.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-stopwatch"></i></div>
+                        <h3 class="feature-title">Temporizador preciso</h3>
+                        <p class="feature-desc">Mide exactamente tu tiempo de lectura con nuestro cronómetro profesional.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                        <h3 class="feature-title">Evaluación de comprensión</h3>
+                        <p class="feature-desc">Preguntas detalladas para evaluar tu comprensión del texto.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="feature-title">Análisis de resultados</h3>
+                        <p class="feature-desc">Estadísticas detalladas y consejos personalizados para mejorar.</p>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="btn btn-primary btn-lg" onclick="startTest()">
+                    <i class="fas fa-play btn-icon"></i> Comenzar Prueba
+                </button>
+            </div>
+
+            <div id="story-container" class="story-container card slide-in">
+                <h2 class="story-title"><i class="fas fa-book-open"></i> <span id="story-title"></span></h2>
+                <div id="story-content" class="story-content"></div>
+                <span id="word-count" class="word-count"></span>
+                
+                <div class="controls">
+                    <button id="start-reading-btn" class="btn btn-primary" onclick="startReading()">
+                        <i class="fas fa-hourglass-start btn-icon"></i> Empezar lectura
+                    </button>
+                    <button id="end-reading-btn" class="btn btn-secondary" onclick="endReading()" disabled>
+                        <i class="fas fa-flag-checkered btn-icon"></i> Terminar lectura
+                    </button>
+                </div>
+            </div>
+
+            <div id="results-container" class="results-container card slide-in">
+                <h2><i class="fas fa-chart-bar"></i> Resultados de Lectura</h2>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h3><i class="fas fa-stopwatch"></i> Tiempo</h3>
+                        <div id="reading-time" class="result-value">0s</div>
+                        <div class="result-label">Tiempo total de lectura</div>
+                    </div>
+                    <div class="result-card">
+                        <h3><i class="fas fa-tachometer-alt"></i> Velocidad</h3>
+                        <div id="reading-speed" class="result-value">0</div>
+                        <div class="result-label">Palabras por minuto</div>
+                    </div>
+                    <div class="result-card">
+                        <h3><i class="fas fa-layer-group"></i> Nivel</h3>
+                        <div id="reading-level" class="result-value">-</div>
+                        <div class="result-label">Tu nivel de lectura</div>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div id="speed-progress" class="progress-bar" style="width: 0%"></div>
+                </div>
+                
+                <p id="speed-feedback" class="feedback"></p>
+
+                <div id="comprehension-section">
+                    <h3><i class="fas fa-question-circle"></i> Cuestionario de Comprensión</h3>
+                    <p>Responde las siguientes preguntas para evaluar tu comprensión del texto.</p>
+                    
+                    <div id="quiz-container" class="quiz-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="timer" class="timer" style="display: none;">
+        <i class="fas fa-clock"></i>
+        <span id="time-display">00:00</span>
+    </div>
+
+    <div id="notification" class="notification">
+        <i id="notification-icon" class="fas fa-info-circle notification-icon"></i>
+        <div id="notification-message"></div>
+        <i class="fas fa-times notification-close" onclick="hideNotification()"></i>
+    </div>
+
+    <div id="instruction-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2><i class="fas fa-info-circle"></i> Instrucciones</h2>
+            <ol>
+                <li>Haz clic en <strong>"Comenzar Prueba"</strong> para seleccionar un cuento al azar.</li>
+                <li>Lee el texto cuidadosamente a tu ritmo normal.</li>
+                <li>Presiona <strong>"Empezar lectura"</strong> cuando estés listo para comenzar.</li>
+                <li>Cuando termines de leer, presiona <strong>"Terminar lectura"</strong>.</li>
+                <li>Verás tus resultados de velocidad y luego responderás preguntas de comprensión.</li>
+                <li>Finalmente, recibirás un análisis completo de tu desempeño.</li>
+            </ol>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value"><i class="fas fa-gauge-high"></i> 150-250</div>
+                    <div class="stat-label">PPM promedio</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value"><i class="fas fa-check"></i> 80%+</div>
+                    <div class="stat-label">Comprensión ideal</div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="closeModal()">
+                <i class="fas fa-check btn-icon"></i> Entendido
+            </button>
+        </div>
+    </div>
+
+    <script src="java.js"></script>
+</body>
+</html>
